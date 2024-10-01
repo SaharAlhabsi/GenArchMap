@@ -80,4 +80,4 @@ def generate():
     return send_file(image_path, mimetype='image/png')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=19123)
+    app.run(debug=True, host='0.0.0.0', port=8080)
