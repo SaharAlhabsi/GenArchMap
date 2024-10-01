@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, send_file
 from transformers import AutoModel, AutoTokenizer
 import diffusers
 import torch
-from peft import PeftModel, PeftConfig
 from PIL import Image
 import os
 
