@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Floor Plan Generator</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Container for the form */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+
+        /* Style the form elements */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Checkboxes */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        /* Room Input Styles */
+        .rooms {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+
+        /* Button */
+        button[type="submit"] {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            label, input, button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Home Floor Plan</h1>
+        <form action="/generate" method="POST">
+            <label for="building_area">Building Area (sqft):</label>
+            <input type="text" id="building_area" name="building_area" placeholder="Enter building area" required>
+
+            <label for="room_count">Number of Rooms:</label>
+            <input type="number" id="room_count" name="room_count" placeholder="Enter number of rooms" required>
+
+            <div id="rooms" class="rooms">
+                <!-- Room inputs added dynamically here -->
+            </div>
+
+            <input type="checkbox" id="kitchen" name="kitchen">
+            <label for="kitchen">Include Kitchen</label><br>
+
+            <input type="checkbox" id="store" name="store">
+            <label for="store">Include Store</label><br>
+
+            <label for="toilet_count">Number of Toilets:</label>
+            <input type="number" id="toilet_count" name="toilet_count" placeholder="Enter number of toilets"><br><br>
+
+            <button type="submit">Generate Floor Plan</button>
+        </form>
+
+        <!-- Section to display the generated image -->
+        <div class="generated-image">
+            {% if request.method == 'POST' %}
+                <h2>Your Generated Floor Plan:</h2>
+                <img src="/static/floor_plan.png" alt="Generated Floor Plan">
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Dynamically add room inputs based on room count
+        document.getElementById('room_count').addEventListener('change', function() {
+            const roomCount = parseInt(this.value);
+            const roomContainer = document.getElementById('rooms');
+            roomContainer.innerHTML = '';  // Clear previous inputs
+
+            for (let i = 1; i <= roomCount; i++) {
+                const roomLabel = document.createElement('label');
+                roomLabel.innerText = `Room ${i} Name: `;
+                const roomInput = document.createElement('input');
+                roomInput.type = 'text';
+                roomInput.name = 'rooms[]';
+                roomInput.placeholder = `Enter name for room ${i}`;
+                roomContainer.appendChild(roomLabel);
+                roomContainer.appendChild(roomInput);
+                roomContainer.appendChild(document.createElement('br'));
+            }
+        });
+    </script>
+</body>
+</html>
